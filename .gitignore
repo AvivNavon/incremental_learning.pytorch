@@ -5,3 +5,5 @@ hyperexps/*
 */.ipynb_checkpoints/*
 notebooks/
 **/*.pyc
+.DS_Store
+.idea/

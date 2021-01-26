@@ -327,3 +327,24 @@ def _aggregate_results(list_results):
     if len(list_results) > 1:
         res = res + " +/- " + str(round(statistics.stdev(list_results) * 100, 2))
     return res
+
+
+if __name__ == '__main__':
+    import matplotlib
+    from inclearn import parser
+
+    matplotlib.use('Agg')
+
+    def main():
+        args = parser.get_parser().parse_args()
+        args = vars(args)  # Converting argparse Namespace to a dict.
+
+        if args["seed_range"] is not None:
+            args["seed"] = list(range(args["seed_range"][0], args["seed_range"][1] + 1))
+            print("Seed range", args["seed"])
+
+        for _ in train(args):  # `train` is a generator in order to be used with hyperfind.
+            pass
+
+
+    main()
