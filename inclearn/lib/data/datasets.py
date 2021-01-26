@@ -113,7 +113,7 @@ class ImageNet100(DataHandler):
         print("Loading metadata of ImageNet_{} ({} split).".format(self.imagenet_size, split))
         metadata_path = os.path.join(
             data_path if self.metadata_path is None else self.metadata_path,
-            "{}_{}{}.txt".format(split, self.imagenet_size, self.suffix)
+            "pod_index/{}_{}{}.txt".format(split, self.imagenet_size, self.suffix)
         )
 
         self.data, self.targets = [], []
