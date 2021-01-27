@@ -308,6 +308,10 @@ class AwA2(DataHandler):
         return self
 
 
+class OurCUB200(DataHandler):
+    pass
+
+
 class CUB200(DataHandler):
     test_split = 0.2
 
