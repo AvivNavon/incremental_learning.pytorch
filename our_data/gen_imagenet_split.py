@@ -13,9 +13,9 @@ def class_map(path):
     return {k: v for v, k in enumerate(all_clsses)}
 
 
-dataroot = Path('/Users/avivnavon/Desktop/inc-gp/mini-imagenet/data')
+dataroot = Path('/mnt/dsi_vol1/users/aviv_navon/mini-imagenet/data')
 prefix = 'images'
-outpath = Path('./miniimagenet')
+outpath = Path('/mnt/dsi_vol1/users/aviv_navon/mini-imagenet/data/pod_index')
 label_map = class_map(dataroot)
 
 # train
