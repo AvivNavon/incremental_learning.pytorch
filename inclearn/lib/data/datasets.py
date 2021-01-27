@@ -77,15 +77,32 @@ class iPermutedMNIST(iMNIST):
 
 
 class ImageNet100(DataHandler):
+    # train_transforms = [
+    #     transforms.RandomResizedCrop(224),
+    #     transforms.RandomHorizontalFlip(),
+    #     transforms.ColorJitter(brightness=63 / 255)
+    # ]
+    # test_transforms = [
+    #     transforms.Resize(256),
+    #     transforms.CenterCrop(224),
+    # ]
+
+    # NOTE: our transforms
     train_transforms = [
-        transforms.RandomResizedCrop(224),
+        transforms.Resize((84, 84)),
+        transforms.RandomCrop(84, padding=8),
         transforms.RandomHorizontalFlip(),
-        transforms.ColorJitter(brightness=63 / 255)
+        # transforms.ToTensor(),
+        # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ]
+
     test_transforms = [
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
+        transforms.Resize((84, 84)),
+        transforms.CenterCrop(84),
+        # transforms.ToTensor(),
+        # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ]
+
     common_transforms = [
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])

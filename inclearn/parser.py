@@ -55,7 +55,9 @@ def get_parser():
                         help="Learning rate.")
     parser.add_argument("-wd", "--weight-decay", default=0.00005, type=float,
                         help="Weight decay.")
-    parser.add_argument("-sc", "--scheduling", default=[49, 63], nargs="*", type=int,
+    # parser.add_argument("-sc", "--scheduling", default=[49, 63], nargs="*", type=int,
+    #                     help="Epoch step where to reduce the learning rate.")
+    parser.add_argument("-sc", "--scheduling", default=[40, 60], nargs="*", type=int,
                         help="Epoch step where to reduce the learning rate.")
     parser.add_argument("-lr-decay", "--lr-decay", default=1/5, type=float,
                         help="LR multiplied by it.")

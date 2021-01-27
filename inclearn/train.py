@@ -98,6 +98,12 @@ def _train(args, start_date, class_order, run_id):
     )
 
     for task_id in range(inc_dataset.n_tasks):
+
+        # NOTE: freeze BN for novel classes
+        # todo: varify
+        if task_id > 0:
+            model._network.convnet.freeze_bn()
+
         task_info, train_loader, val_loader, test_loader = inc_dataset.new_task(memory, memory_val)
         if task_info["task"] == args["max_task"]:
             break

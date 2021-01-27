@@ -168,6 +168,12 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
+    def freeze_bn(self):
+        for m in self.modules():
+            if isinstance(m, nn.BatchNorm2d):
+                m.weight.requires_grad = False
+                m.bias.requires_grad = False
+
     @property
     def last_block(self):
         return self.layer4

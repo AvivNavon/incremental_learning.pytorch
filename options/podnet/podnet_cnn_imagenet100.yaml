@@ -6,14 +6,15 @@ convnet: rebuffi
 convnet: resnet18
 convnet_config:
   nf: 64
+  pretrained: false  # added
 
-batch_size: 64
+batch_size: 128 # changed: 64
 
 eval_type: cnn
 
 classifier_config:
   type: cosine
-  proxy_per_class: 10
+  proxy_per_class: 5 # changed: 10
   distance: neg_stable_cosine_distance
 
 postprocessor_config:
@@ -43,19 +44,22 @@ finetuning_config:
   scaling: null
 
 # Cosine Scheduling (CS)
-scheduling: cosine
+scheduling_config: # added
+  scheduling: step # changed: cosine
+  gamma: 0.1 # added
+  epochs: [40, 60] # added
 
 # Misc
-epochs: 90
-lr: 0.05
+epochs: 100 # changed: 90
+lr: 0.1 # changed: 0.05
 lr_decay: 0.1
 optimizer: sgd
 proxy_per_class: 1
-weight_decay: 0.0005
+weight_decay: 0.0001 # changed: 0.0005
 
 weight_generation:
   type: imprinted
   multi_class_diff: kmeans
 
 dataset_transforms:
-  color_jitter: true
+  color_jitter: false # changed: true
