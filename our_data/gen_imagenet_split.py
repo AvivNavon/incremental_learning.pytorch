@@ -55,7 +55,10 @@ if gen_sample:
 
 else:
     for episode_id in range(1, 10):
-        idx_file = open(dataroot / "index_list" / f"session_{episode_id}.txt", 'r')
+        if episode_id == 1:
+            idx_file = open(dataroot / "index_list" / f"session_{episode_id}_train.txt", 'r')
+        else:
+            idx_file = open(dataroot / "index_list" / f"session_{episode_id}.txt", 'r')
         lines = [l for l in idx_file]
         order += list(set([label_map[l.split("/")[-2]] for l in lines]))
         all_train_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
