@@ -294,6 +294,8 @@ class OurResnet18(nn.Module):
 
     def __init__(self, last_relu=False, pretrained=False, **kwargs):
         super().__init__()
+        print("Using our beautiful ResNet18 :)")
+
         self.fe = models.resnet18(pretrained=pretrained)
         self.fe.fc = None
         # self.end_features = nn.Linear(512, 512)
