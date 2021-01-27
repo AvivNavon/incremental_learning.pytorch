@@ -16,8 +16,8 @@ def get_save_folder(model, date, label):
     week_number = math.ceil(int(day) / 7)
 
     folder_path = os.path.join(
-        # "results", "dev", model, year_month, "week_{}".format(week_number),
-        "results", "miniimagenet", model, year_month, "week_{}".format(week_number),
+        "results", "dev", model, year_month, "week_{}".format(week_number),
+        # "results", "miniimagenet", model, year_month, "week_{}".format(week_number),
         "{}_{}".format(date, label)
     )
     if not os.path.exists(folder_path):
