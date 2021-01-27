@@ -26,7 +26,8 @@ def get_optimizer(params, optimizer, lr, weight_decay=0.0):
 
 def get_convnet(convnet_type, **kwargs):
     if convnet_type == "resnet18":
-        return resnet.resnet18(**kwargs)
+        # return resnet.resnet18(**kwargs)
+        return resnet.OurResnet18(**kwargs)
     if convnet_type == "resnet101":
         return resnet.resnet101(**kwargs)
     if convnet_type == "resnet18_mtl":

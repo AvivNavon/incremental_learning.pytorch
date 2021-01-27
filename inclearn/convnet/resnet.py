@@ -4,6 +4,7 @@
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 from torch.nn import functional as F
+from torchvision import models
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152']
 
@@ -285,3 +286,74 @@ def resnet152(pretrained=False, **kwargs):
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet152']))
     return model
+
+
+# Ours
+
+class OurResnet18(nn.Module):
+
+    def __init__(self, last_relu=False, pretrained=False, **kwargs):
+        super().__init__()
+        self.fe = models.resnet18(pretrained=pretrained)
+        self.fe.fc = None
+        # self.end_features = nn.Linear(512, 512)
+
+        self.last_relu = last_relu
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+
+        self.out_dim = 512
+        print("Features dimension is {}.".format(self.out_dim))
+
+    def freeze_bn(self):
+        for m in self.modules():
+            if isinstance(m, nn.BatchNorm2d):
+                m.weight.requires_grad = False
+                m.bias.requires_grad = False
+
+    @property
+    def last_block(self):
+        return self.layer4
+
+    @property
+    def last_conv(self):
+        return self.layer4[-1].conv2
+
+    def forward(self, x):
+        x = self.fe.conv1(x)
+        x = self.fe.bn1(x)
+        x = self.fe.relu(x)
+        x = self.fe.maxpool(x)
+
+        x_1 = self.fe.layer1(x)
+        x_2 = self.fe.layer2(self.end_relu(x_1))
+        x_3 = self.fe.layer3(self.end_relu(x_2))
+        x_4 = self.fe.layer4(self.end_relu(x_3))
+
+        raw_features = self.end_features(x_4)
+        features = self.end_features(F.relu(x_4, inplace=False))
+
+        return {
+            "raw_features": raw_features,
+            "features": features,
+            "attention": [x_1, x_2, x_3, x_4]
+        }
+
+    def end_features(self, x):
+        x = self.avgpool(x)
+        x = x.view(x.size(0), -1)
+        return x
+
+    def end_relu(self, x):
+        if hasattr(self, "last_relu") and self.last_relu:
+            return F.relu(x)
+        return x
+
+
+if __name__ == '__main__':
+    from torchsummary import summary
+    import torch
+
+    model = OurResnet18(pretrained=False)
+    summary(model, input_size=(3, 84, 84), device='cpu')
+    x = torch.empty((1, 3, 84, 84))
+    model(x)
