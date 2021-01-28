@@ -247,10 +247,8 @@ class ICarl(IncrementalLearner):
             if self._scheduler:
                 self._scheduler.step(epoch)
 
-
-            print(epoch)
-
-            if self._eval_every_x_epochs and epoch != 0 and epoch % self._eval_every_x_epochs == 0:
+            # if self._eval_every_x_epochs and epoch != 0 and epoch % self._eval_every_x_epochs == 0:
+            if epoch % self._eval_every_x_epochs == 0:
                 self._network.eval()
                 self._data_memory, self._targets_memory, self._herding_indexes, self._class_means = self.build_examplars(
                     self.inc_dataset, self._herding_indexes
