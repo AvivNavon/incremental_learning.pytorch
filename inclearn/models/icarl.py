@@ -51,7 +51,7 @@ class ICarl(IncrementalLearner):
         if self._warmup_config and self._warmup_config["total_epoch"] > 0:
             self._lr /= self._warmup_config["multiplier"]
 
-        self._eval_every_x_epochs = 1  # args.get("eval_every_x_epochs")
+        self._eval_every_x_epochs = args.get("eval_every_x_epochs")
         self._early_stopping = args.get("early_stopping", {})
 
         self._memory_size = args["memory_size"]
@@ -247,16 +247,16 @@ class ICarl(IncrementalLearner):
             if self._scheduler:
                 self._scheduler.step(epoch)
 
-            # if self._eval_every_x_epochs and epoch != 0 and epoch % self._eval_every_x_epochs == 0:
-            if epoch % self._eval_every_x_epochs == 0:
+            # if epoch % self._eval_every_x_epochs == 0:
+            if self._eval_every_x_epochs and epoch != 0 and epoch % self._eval_every_x_epochs == 0:
                 self._network.eval()
                 self._data_memory, self._targets_memory, self._herding_indexes, self._class_means = self.build_examplars(
                     self.inc_dataset, self._herding_indexes
                 )
-                ytrue, ypred = self._eval_task(val_loader)
-                acc = 100 * round((ypred == ytrue).sum() / len(ytrue), 3)
+                ypred, ytrue = self._eval_task(val_loader)
+                acc = round((ypred.argmax(1) == ytrue).sum() / len(ytrue), 5)
                 logger.info("Val accuracy: {}".format(acc))
-                print("Val accuracy: {}".format(acc))
+
                 self._network.train()
 
                 if acc > best_acc:

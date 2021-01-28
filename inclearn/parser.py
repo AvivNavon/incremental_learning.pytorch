@@ -57,6 +57,8 @@ def get_parser():
                         help="Weight decay.")
     # parser.add_argument("-sc", "--scheduling", default=[49, 63], nargs="*", type=int,
     #                     help="Epoch step where to reduce the learning rate.")
+    parser.add_argument("--eval-every-x-epochs", default=1, type=int,
+                        help="eval every.")
     parser.add_argument("-sc", "--scheduling", default=[40, 60], nargs="*", type=int,
                         help="Epoch step where to reduce the learning rate.")
     parser.add_argument("-lr-decay", "--lr-decay", default=1/5, type=float,
