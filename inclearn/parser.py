@@ -97,4 +97,7 @@ def get_parser():
     parser.add_argument("--no-benchmark", action="store_true", default=False)
     parser.add_argument("--detect-anomaly", action="store_true", default=False)
 
+    # NOTE: ours
+    parser.add_argument("--loss-type", default="nca", choices=['ce', 'nca'], type=str)
+
     return parser
