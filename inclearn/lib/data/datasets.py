@@ -4,6 +4,7 @@ import logging
 import math
 import os
 import warnings
+from pathlib import Path
 
 import numpy as np
 from torchvision import datasets, transforms
@@ -309,7 +310,54 @@ class AwA2(DataHandler):
 
 
 class OurCUB200(DataHandler):
-    pass
+    train_transforms = [
+        transforms.Resize((84, 84)),
+        transforms.RandomCrop(84, padding=8),
+        transforms.RandomHorizontalFlip(),
+        # transforms.ToTensor(),
+        # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ]
+
+    test_transforms = [
+        transforms.Resize((84, 84)),
+        transforms.CenterCrop(84),
+        # transforms.ToTensor(),
+        # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ]
+
+    common_transforms = [
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ]
+
+    cub_size = 200
+    open_image = True
+    metadata_path = '/mnt/dsi_vol1/users/aviv_navon/cub/data/pod_index'
+    class_order = list(range(200))
+
+    def base_dataset(self, data_path='/cortex/data/images/CUB/CUB_200_2011/images', train=True, download=False):
+        if download:
+            warnings.warn(
+                "CUB incremental dataset cannot download itself,"
+                " please see the instructions in the README."
+            )
+
+        split = "train" if train else "test"
+
+        metadata_path = Path(self.metadata_path) / f'{split}.txt'
+        print("Loading metadata of CUB_{} ({} split) from {}.".format(self.cub_size, split, metadata_path))
+
+        self.data, self.targets = [], []
+        with open(metadata_path) as f:
+            for line in f:
+                path, target = line.strip().split(" ")
+
+                self.data.append(os.path.join(data_path, path))
+                self.targets.append(int(target))
+
+        self.data = np.array(self.data)
+
+        return self
 
 
 class CUB200(DataHandler):

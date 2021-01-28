@@ -292,7 +292,7 @@ def resnet152(pretrained=False, **kwargs):
 
 class OurResnet18(nn.Module):
 
-    def __init__(self, last_relu=False, pretrained=False, **kwargs):
+    def __init__(self, out_dim=512, last_relu=False, pretrained=False, **kwargs):
         super().__init__()
         print("Using our beautiful ResNet18 :)")
 
@@ -303,7 +303,7 @@ class OurResnet18(nn.Module):
         self.last_relu = last_relu
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
-        self.out_dim = 512
+        self.out_dim = out_dim
         print("Features dimension is {}.".format(self.out_dim))
 
     def freeze_bn(self):

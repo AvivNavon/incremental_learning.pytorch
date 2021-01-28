@@ -9,7 +9,7 @@ from torchvision import transforms
 
 from .datasets import (
     APY, CUB200, LAD, AwA2, ImageNet100, ImageNet100UCIR, ImageNet1000, TinyImageNet200, iCIFAR10,
-    iCIFAR100
+    iCIFAR100, OurCUB200
 )
 
 logger = logging.getLogger(__name__)
@@ -451,7 +451,7 @@ def _get_dataset(dataset_name):
     elif dataset_name == "awa2":
         return AwA2
     elif dataset_name == "cub200":
-        return CUB200
+        return OurCUB200 # CUB200
     elif dataset_name == "apy":
         return APY
     elif dataset_name == "lad":

@@ -332,6 +332,7 @@ class PODNet(ICarl):
                     **nca_config
                 )
                 self._metrics["nca"] += loss.item()
+
         elif self._loss_type == 'ce':
             loss = F.cross_entropy(scaled_logits, targets)
             self._metrics["ce"] += loss.item()
