@@ -61,7 +61,7 @@ class PODNet(ICarl):
         self._evaluation_type = args.get("eval_type", "icarl")
         self._evaluation_config = args.get("evaluation_config", {})
 
-        self._eval_every_x_epochs = args.get("eval_every_x_epochs")
+        self._eval_every_x_epochs = 1  # args.get("eval_every_x_epochs")
         self._early_stopping = args.get("early_stopping", {})
 
         self._gradcam_distil = args.get("gradcam_distil", {})
