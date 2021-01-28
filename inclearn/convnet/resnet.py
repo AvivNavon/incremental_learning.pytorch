@@ -298,7 +298,7 @@ class OurResnet18(nn.Module):
 
         self.fe = models.resnet18(pretrained=pretrained)
         self.fe.fc = None
-        # self.end_features = nn.Linear(512, 512)
+        self.out_fc = nn.Linear(512, 512)
 
         self.last_relu = last_relu
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
@@ -343,7 +343,8 @@ class OurResnet18(nn.Module):
     def end_features(self, x):
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        return x
+
+        return self.out_fc(x)
 
     def end_relu(self, x):
         if hasattr(self, "last_relu") and self.last_relu:

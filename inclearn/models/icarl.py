@@ -51,7 +51,7 @@ class ICarl(IncrementalLearner):
         if self._warmup_config and self._warmup_config["total_epoch"] > 0:
             self._lr /= self._warmup_config["multiplier"]
 
-        self._eval_every_x_epochs = args.get("eval_every_x_epochs")
+        self._eval_every_x_epochs = 5  # args.get("eval_every_x_epochs")
         self._early_stopping = args.get("early_stopping", {})
 
         self._memory_size = args["memory_size"]
