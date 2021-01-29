@@ -298,7 +298,7 @@ class OurResnet18(nn.Module):
 
         self.fe = models.resnet18(pretrained=pretrained)
         self.fe.fc = None
-        self.out_fc = nn.Linear(512, 512)
+        self.out_fc = nn.Linear(512, out_dim)
 
         self.last_relu = last_relu
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
@@ -356,7 +356,7 @@ if __name__ == '__main__':
     from torchsummary import summary
     import torch
 
-    model = OurResnet18(pretrained=False)
+    model = resnet18(pretrained=False)
     summary(model, input_size=(3, 84, 84), device='cpu')
     x = torch.empty((1, 3, 84, 84))
     model(x)

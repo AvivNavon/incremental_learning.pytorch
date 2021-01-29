@@ -38,7 +38,9 @@ def train(args):
     if args["save_model"] != "never" and args["label"] is None:
         raise ValueError(f"Saving model every {args['save_model']} but no label was specified.")
 
-    seed_list = copy.deepcopy(args["seed"])
+    # seed_list = copy.deepcopy(args["seed"])
+    seed_list = args["seeds"]
+    print(f"Seeds {seed_list}")
     device = copy.deepcopy(args["device"])
 
     start_date = utils.get_date()

@@ -113,6 +113,7 @@ class ImageNet100(DataHandler):
     open_image = True
     suffix = ""
     metadata_path = None
+    class_order = list(range(100))
 
     def set_custom_transforms(self, transforms):
         if not transforms.get("color_jitter"):

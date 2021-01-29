@@ -3,7 +3,7 @@ dataset: imagenet100
 model: podnet
 convnet: rebuffi
 
-convnet: resnet18
+convnet: resnet18_imagenet
 convnet_config:
   nf: 64
   pretrained: false  # added
