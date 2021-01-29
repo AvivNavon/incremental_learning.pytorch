@@ -154,9 +154,9 @@ def compute_unique_score(runs_accs, skip_first=False, first_n_steps=None):
         std = ""
     else:
         std = math.sqrt(sum(math.pow(mean_of_mean - i, 2) for i in means) / len(means))
-        std = " ± " + str(round(std, 2))
+        std = " ± " + str(round(std, 5))
 
-    return str(round(mean_of_mean, 2)), std
+    return str(round(mean_of_mean, 5)), std
 
 
 def get_max_label_length(results):
@@ -224,7 +224,7 @@ def plot(
         )
 
         label = "{label} ({avg})".format(
-            label=label, avg=unique_score + unique_std, last=round(means[-1], 2)
+            label=label, avg=unique_score + unique_std, last=round(means[-1], 5)
         )
 
         try:

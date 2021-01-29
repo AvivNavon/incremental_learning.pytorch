@@ -27,7 +27,7 @@ def check_loss(loss):
 def compute_accuracy(ypred, ytrue, task_size=10):
     all_acc = {}
 
-    all_acc["total"] = round((ypred == ytrue).sum() / len(ytrue), 3)
+    all_acc["total"] = round((ypred == ytrue).sum() / len(ytrue), 5)
 
     for class_id in range(0, np.max(ytrue), task_size):
         idxes = np.where(np.logical_and(ytrue >= class_id, ytrue < class_id + task_size))[0]
@@ -36,7 +36,7 @@ def compute_accuracy(ypred, ytrue, task_size=10):
             str(class_id).rjust(2, "0"),
             str(class_id + task_size - 1).rjust(2, "0")
         )
-        all_acc[label] = round((ypred[idxes] == ytrue[idxes]).sum() / len(idxes), 3)
+        all_acc[label] = round((ypred[idxes] == ytrue[idxes]).sum() / len(idxes), 5)
 
     return all_acc
 
