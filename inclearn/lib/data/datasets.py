@@ -310,24 +310,39 @@ class AwA2(DataHandler):
 
 
 class OurCUB200(DataHandler):
-    train_transforms = [
-        transforms.Resize((84, 84)),
-        transforms.RandomCrop(84, padding=8),
+    train_transforms = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.RandomCrop(224),
         transforms.RandomHorizontalFlip(),
         # transforms.ToTensor(),
         # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
-    ]
+    ])
 
-    test_transforms = [
-        transforms.Resize((84, 84)),
-        transforms.CenterCrop(84),
+    test_transforms = transforms.Compose([
+        transforms.Resize((224, 224)),
         # transforms.ToTensor(),
         # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
-    ]
+    ])
+
+
+    # train_transforms = [
+    #     transforms.Resize((84, 84)),
+    #     transforms.RandomCrop(84, padding=8),
+    #     transforms.RandomHorizontalFlip(),
+    #     # transforms.ToTensor(),
+    #     # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    # ]
+    #
+    # test_transforms = [
+    #     transforms.Resize((84, 84)),
+    #     transforms.CenterCrop(84),
+    #     # transforms.ToTensor(),
+    #     # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    # ]
 
     common_transforms = [
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     ]
 
     cub_size = 200

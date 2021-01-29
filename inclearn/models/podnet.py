@@ -302,10 +302,6 @@ class PODNet(ICarl):
     def _compute_loss(self, inputs, outputs, targets, onehot_targets, memory_flags):
         features, logits, atts = outputs["raw_features"], outputs["logits"], outputs["attention"]
 
-        # NOTE: ours for sanity
-        if self._loss_type == 'ce':
-            return F.cross_entropy(logits, targets)
-
         if self._post_processing_type is None:
             scaled_logits = self._network.post_process(logits)
         else:
@@ -317,25 +313,26 @@ class PODNet(ICarl):
                 old_features = old_outputs["raw_features"]
                 old_atts = old_outputs["attention"]
 
-        if self._loss_type == 'nca':
+        # if self._loss_type == 'nca':
 
-            if self._nca_config:
-                nca_config = copy.deepcopy(self._nca_config)
-                if self._network.post_processor:
-                    nca_config["scale"] = self._network.post_processor.factor
+        if self._nca_config:
+            nca_config = copy.deepcopy(self._nca_config)
+            if self._network.post_processor:
+                nca_config["scale"] = self._network.post_processor.factor
 
-                loss = losses.nca(
-                    logits,
-                    targets,
-                    memory_flags=memory_flags,
-                    class_weights=self._class_weights,
-                    **nca_config
-                )
-                self._metrics["nca"] += loss.item()
+            loss = losses.nca(
+                logits,
+                targets,
+                memory_flags=memory_flags,
+                class_weights=self._class_weights,
+                **nca_config
+            )
+            self._metrics["nca"] += loss.item()
 
-        elif self._loss_type == 'ce':
-            loss = F.cross_entropy(scaled_logits, targets)
-            self._metrics["ce"] += loss.item()
+        # NOTE: ours
+        # elif self._loss_type == 'ce':
+        #     loss = F.cross_entropy(scaled_logits, targets)
+        #     self._metrics["ce"] += loss.item()
 
         elif self._softmax_ce:
             loss = F.cross_entropy(scaled_logits, targets)

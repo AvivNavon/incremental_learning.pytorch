@@ -51,7 +51,7 @@ scheduling_config: # added
 
 # Misc
 epochs: 100 # changed: 90
-lr: 0.1 # changed: 0.05
+lr: 0.01 # changed: 0.05
 lr_decay: 0.1
 optimizer: sgd
 proxy_per_class: 1
