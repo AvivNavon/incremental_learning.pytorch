@@ -61,5 +61,5 @@ weight_generation:
   type: imprinted
   multi_class_diff: kmeans
 
-dataset_transforms:
-  color_jitter: false # changed: true
+# dataset_transforms:
+#   color_jitter: false # changed: true
