@@ -182,7 +182,7 @@ def accuracy(output, targets, topk=1):
     correct = pred.eq(targets.view(1, -1).expand_as(pred))
 
     correct_k = correct[:topk].view(-1).float().sum(0).item()
-    return round(correct_k / batch_size, 3)
+    return round(correct_k / batch_size, 5)
 
 
 def incremental_accuracy(accuracies):
