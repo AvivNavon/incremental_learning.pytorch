@@ -99,5 +99,6 @@ def get_parser():
 
     # NOTE: ours
     # parser.add_argument("--loss-type", default="nca", choices=['ce', 'nca'], type=str)
+    parser.add_argument("--seeds",  default=[2], type=int, nargs="+")
 
     return parser

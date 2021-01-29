@@ -5,7 +5,7 @@ from torch import optim
 
 from inclearn import models
 from inclearn.convnet import (
-    densenet, my_resnet, my_resnet2, my_resnet_brn, my_resnet_mcbn, my_resnet_mtl, resnet,
+    densenet, my_resnet, my_resnet2, my_resnet_brn, my_resnet_mcbn, my_resnet_mtl, resnet, resnet_for_mini,
     resnet_mtl, ucir_resnet, vgg
 )
 from inclearn.lib import data, schedulers
@@ -28,6 +28,9 @@ def get_convnet(convnet_type, **kwargs):
     if convnet_type == "resnet18":
         # return resnet.resnet18(**kwargs)
         return resnet.OurResnet18(**kwargs)
+    if convnet_type == 'resnet18_imagenet':
+        print("ResNet18 for mini-imagenet")
+        return resnet_for_mini.ResNet18()
     if convnet_type == "resnet101":
         return resnet.resnet101(**kwargs)
     if convnet_type == "resnet18_mtl":
