@@ -7,6 +7,7 @@ import random
 import statistics
 import sys
 import time
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -197,9 +198,12 @@ def _train(args, start_date, class_order, run_id):
         "Average Incremental Accuracy: {}.".format(results["results"][-1]["incremental_accuracy"])
     )
     if args["label"] is not None:
-        results_utils.save_results(
-            results, args["label"], args["model"], start_date, run_id, args["seed"]
+        path = results_utils.save_results(
+            results, args["label"], args["model"], start_date, run_id, args["seed"], return_folder=True
         )
+
+    with open(Path(path) / 'last_pred_target.pkl', 'wb') as f:
+        pickle.dump(model._last_results, f)
 
     del model
     del inc_dataset

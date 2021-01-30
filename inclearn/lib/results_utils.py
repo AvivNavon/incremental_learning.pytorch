@@ -26,7 +26,7 @@ def get_save_folder(model, date, label):
     return folder_path
 
 
-def save_results(results, label, model, date, run_id, seed):
+def save_results(results, label, model, date, run_id, seed, return_folder=False):
     del results["config"]["device"]
 
     folder_path = get_save_folder(model, date, label)
@@ -38,6 +38,9 @@ def save_results(results, label, model, date, run_id, seed):
             json.dump(results, f, indent=2)
         except Exception:
             print("Failed to dump exps on json file.")
+
+    if return_folder:
+        return folder_path
 
 
 def extract(paths, metric="avg_inc", nb_classes=None):
