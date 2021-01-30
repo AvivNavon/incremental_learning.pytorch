@@ -13,8 +13,8 @@ def class_map(path):
     return {k: v for v, k in enumerate(all_clsses)}
 
 
-gen_sample = False
-local = False
+gen_sample = True
+local = True
 
 if local:
     dataroot = Path('/Users/avivnavon/Desktop/inc-gp/mini-imagenet/data')
@@ -36,7 +36,7 @@ if gen_sample:
         idx_file = open(dataroot / "index_list" / f"session_{episode_id}.txt", 'r')
         lines = [l for l in idx_file]
 
-        idxs = np.random.choice(range(len(lines)), 60 * 5)
+        idxs = np.random.choice(range(len(lines)), 60 * 3)
 
         order += list(set([label_map[l.split("/")[-2]] for i, l in enumerate(lines) if i in idxs]))
         all_train_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for i, l in enumerate(lines) if i in idxs]

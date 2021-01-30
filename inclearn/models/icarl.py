@@ -481,7 +481,18 @@ class ICarl(IncrementalLearner):
         D2 = feat_flip.T
         D2 = D2 / (np.linalg.norm(D2, axis=0) + EPSILON)
 
+        len_d = D.shape[1]
+        len_d2 = D2.shape[1]
+
+        if max(indexes) >= len_d:
+            logger.info(f"selected_indexes > D.shape[1] with max idx {max(indexes)} vs. shape {D.shape[1]}")
+            indexes = indexes[indexes < len_d]
+
         selected_d = D[..., indexes]
+
+        if max(indexes) >= len_d2:  # NOTE: just in case
+            indexes = indexes[indexes < len_d2]
+
         selected_d2 = D2[..., indexes]
 
         mean = (np.mean(selected_d, axis=1) + np.mean(selected_d2, axis=1)) / 2
