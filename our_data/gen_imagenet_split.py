@@ -13,8 +13,8 @@ def class_map(path):
     return {k: v for v, k in enumerate(all_clsses)}
 
 
-gen_sample = True
-local = True
+gen_sample = False
+local = False
 
 if local:
     dataroot = Path('/Users/avivnavon/Desktop/inc-gp/mini-imagenet/data')
