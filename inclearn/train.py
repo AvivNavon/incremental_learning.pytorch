@@ -203,7 +203,7 @@ def _train(args, start_date, class_order, run_id):
         )
 
     with open(Path(path) / 'last_pred_target.pkl', 'wb') as f:
-        pickle.dump(model._last_results, f)
+        pickle.dump([model._last_results, model._last_logit], f)
 
     del model
     del inc_dataset

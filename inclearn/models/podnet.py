@@ -221,6 +221,7 @@ class PODNet(ICarl):
         elif self._evaluation_type in ("softmax", "cnn"):
             ypred = []
             ytrue = []
+            all_logits = []
 
             for input_dict in test_loader:
                 ytrue.append(input_dict["targets"].numpy())
@@ -231,10 +232,13 @@ class PODNet(ICarl):
                 preds = F.softmax(logits, dim=-1)
                 ypred.append(preds.cpu().numpy())
 
+                all_logits.append(logits.cpu().numpy())
+
             ypred = np.concatenate(ypred)
             ytrue = np.concatenate(ytrue)
 
             self._last_results = (ypred, ytrue)
+            self._last_logit = np.concatenate(all_logits)
 
             return ypred, ytrue
         else:
