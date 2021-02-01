@@ -116,9 +116,10 @@ class ImageNet100(DataHandler):
     class_order = list(range(100))
 
     def set_custom_transforms(self, transforms):
-        if not transforms.get("color_jitter"):
-            logger.info("Not using color jitter.")
-            self.train_transforms.pop(-1)
+        pass
+        # if not transforms.get("color_jitter"):
+        #     logger.info("Not using color jitter.")
+        #     self.train_transforms.pop(-1)
 
     def base_dataset(self, data_path, train=True, download=False):
         if download:
