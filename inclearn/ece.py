@@ -8,7 +8,7 @@ def detach_to_numpy(tensor):
 
 
 def calc_ece(logits, targets, temp):
-    probs = F.softmax(logits / temp)
+    probs = F.softmax(logits / temp, dim=-1)
 
     confidences = probs.max(-1).values.detach().numpy()
     accuracies = probs.argmax(-1).eq(targets).numpy()
@@ -49,3 +49,4 @@ if __name__ == '__main__':
 
 
     print(calc_ece(logit, target, .1))
+

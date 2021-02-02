@@ -141,7 +141,7 @@ def _train(args, start_date, class_order, run_id):
         )
 
         if args["temp_scaling"] and task_id == 0:
-            temps = [.04, .05, .6, .7, .8, .9, .1, .15, .2]
+            temps = [.04, .05, .06, .07, .08, .09, .1, .15, .2]
             logits = model._last_logit
 
             logits = torch.from_numpy(logits.astype(float))
