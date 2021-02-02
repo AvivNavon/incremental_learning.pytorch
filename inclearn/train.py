@@ -16,6 +16,7 @@ import yaml
 from inclearn.lib import factory
 from inclearn.lib import logger as logger_lib
 from inclearn.lib import metrics, results_utils, utils
+from inclearn.ece import calc_ece
 
 logger = logging.getLogger(__name__)
 
@@ -138,6 +139,18 @@ def _train(args, start_date, class_order, run_id):
         metric_logger.log_task(
             ypreds, ytrue, task_size=task_info["increment"], zeroshot=args.get("all_test_classes")
         )
+
+        if args["temp_scaling"] and task_id == 0:
+            temps = [.04, .05, .6, .7, .8, .9, .1, .15, .2]
+            logits = model._last_logit
+
+            logits = torch.from_numpy(logits.astype(float))
+            ytrue_torch = torch.from_numpy(ytrue.astype(int))
+            eces = [calc_ece(logits, ytrue_torch, t) for t in temps]
+            best_temp = temps[np.argmin(eces)]
+            logging.info(f"best temp {best_temp}")
+            with open('./best_temp.json', 'w') as f:
+                json.dump(dict(best_temp=best_temp), f)
 
         if args["dump_predictions"] and args["label"]:
             os.makedirs(

@@ -100,5 +100,6 @@ def get_parser():
     # NOTE: ours
     # parser.add_argument("--loss-type", default="nca", choices=['ce', 'nca'], type=str)
     parser.add_argument("--seeds",  default=[2], type=int, nargs="+")
+    parser.add_argument("temp-scaling", default=False, action="store_true")
 
     return parser
