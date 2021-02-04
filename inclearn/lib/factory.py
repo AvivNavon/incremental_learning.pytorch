@@ -28,9 +28,9 @@ def get_convnet(convnet_type, **kwargs):
     if convnet_type == "resnet18":
         # return resnet.resnet18(**kwargs)
         return resnet.OurResnet18(**kwargs)
-    if convnet_type == 'resnet18_imagenet':
-        print("ResNet18 for mini-imagenet")
-        return resnet_for_mini.ResNet18()
+    # if convnet_type == 'resnet18_imagenet':
+    #     print("ResNet18 for mini-imagenet")
+    #     return resnet_for_mini.ResNet18()
     if convnet_type == "resnet101":
         return resnet.resnet101(**kwargs)
     if convnet_type == "resnet18_mtl":
