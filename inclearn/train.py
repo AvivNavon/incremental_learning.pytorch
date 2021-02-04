@@ -150,7 +150,7 @@ def _train(args, start_date, class_order, run_id):
             best_temp = temps[np.argmin(eces)]
             logging.info(f"best temp {best_temp}")
             with open('./best_temp.json', 'w') as f:
-                json.dump(dict(best_temp=best_temp, seed=args["seeds"]), f)
+                json.dump(dict(best_temp=best_temp, seed=args["seed"]), f)
 
         if args["dump_predictions"] and args["label"]:
             os.makedirs(
@@ -215,7 +215,7 @@ def _train(args, start_date, class_order, run_id):
             results, args["label"], args["model"], start_date, run_id, args["seed"], return_folder=True
         )
 
-    with open(Path(path) / 'last_pred_target.pkl', 'wb') as f:
+    with open(Path(path) / f'last_pred_target_{args["seed"]}.pkl', 'wb') as f:
         pickle.dump([model._last_results, model._last_logit], f)
 
     del model
