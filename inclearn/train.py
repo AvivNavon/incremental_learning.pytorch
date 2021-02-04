@@ -150,7 +150,7 @@ def _train(args, start_date, class_order, run_id):
             best_temp = temps[np.argmin(eces)]
             logging.info(f"best temp {best_temp}")
             with open('./best_temp.json', 'w') as f:
-                json.dump(dict(best_temp=best_temp), f)
+                json.dump(dict(best_temp=best_temp, seed=args["seeds"]), f)
 
         if args["dump_predictions"] and args["label"]:
             os.makedirs(
