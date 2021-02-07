@@ -356,7 +356,7 @@ if __name__ == '__main__':
     from torchsummary import summary
     import torch
 
-    model = resnet18(pretrained=False)
+    model = OurResnet18(pretrained=False)
     summary(model, input_size=(3, 84, 84), device='cpu')
     x = torch.empty((1, 3, 84, 84))
     model(x)
