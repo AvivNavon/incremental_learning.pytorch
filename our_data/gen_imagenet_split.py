@@ -55,15 +55,23 @@ if gen_sample:
     all_test_images = []
     order = []
 
-    for episode_id in range(1, 10):
-        idx_file = open(dataroot / "index_list" / f"test_{episode_id}.txt", 'r')
+    if split == 'test':
+        for episode_id in range(1, 10):
+            idx_file = open(dataroot / "index_list" / f"test_{episode_id}.txt", 'r')
+            lines = [l for l in idx_file]
+
+            idxs = np.random.choice(range(len(lines)), 60 * 2)
+
+            curr_classes = list(set([label_map[l.split("/")[-2]] for i, l in enumerate(lines) if i in idxs]))
+            order += curr_classes
+            all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for i, l in enumerate(lines) if i in idxs]
+
+    else:  # val split
+        idx_file = open(dataroot / "index_list" / f"session_1_val.txt", 'r')
         lines = [l for l in idx_file]
-
-        idxs = np.random.choice(range(len(lines)), 60 * 2)
-
-        curr_classes = list(set([label_map[l.split("/")[-2]] for i, l in enumerate(lines) if i in idxs]))
+        curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
         order += curr_classes
-        all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for i, l in enumerate(lines) if i in idxs]
+        all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
 
     with open(outpath / 'val_100.txt', 'w') as f:
         for item in all_test_images:
@@ -94,7 +102,7 @@ else:
             curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
             order += curr_classes
             all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
-    else:
+    else:  # val split
         idx_file = open(dataroot / "index_list" / f"session_1_val.txt", 'r')
         lines = [l for l in idx_file]
         curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
