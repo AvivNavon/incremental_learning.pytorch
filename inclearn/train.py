@@ -100,7 +100,7 @@ def _train(args, start_date, class_order, run_id):
     metric_logger = metrics.MetricLogger(
         inc_dataset.n_tasks, inc_dataset.n_classes, inc_dataset.increments
     )
-
+    best_temp = None
     for task_id in range(inc_dataset.n_tasks):
 
         # NOTE: freeze BN for novel classes
@@ -140,17 +140,23 @@ def _train(args, start_date, class_order, run_id):
             ypreds, ytrue, task_size=task_info["increment"], zeroshot=args.get("all_test_classes")
         )
 
-        if args["temp_scaling"] and task_id == 0:
-            temps = np.arange(.02, 4, .02).tolist()  # [.04, .05, .06, .07, .08, .09, .1, .15, .2]
-            logits = model._last_logit
+        if args["temp_scaling"]:
+            if task_id == 0:
+                temps = np.arange(.02, 4, .02).tolist()  # [.04, .05, .06, .07, .08, .09, .1, .15, .2]
+                logits = model._last_logit
 
-            logits = torch.from_numpy(logits.astype(float))
-            ytrue_torch = torch.from_numpy(ytrue.astype(int))
-            eces = [calc_ece(logits, ytrue_torch, t) for t in temps]
-            best_temp = temps[np.argmin(eces)]
-            logging.info(f"best temp {best_temp}")
-            with open('./best_temp.json', 'w') as f:
-                json.dump(dict(best_temp=best_temp, seed=args["seed"]), f)
+                logits = torch.from_numpy(logits.astype(float))
+                ytrue_torch = torch.from_numpy(ytrue.astype(int))
+                eces = [calc_ece(logits, ytrue_torch, t) for t in temps]
+                best_temp = temps[np.argmin(eces)]
+
+                logging.info(f"best temp {best_temp}")
+
+                with open(Path(results_folder) / f'./best_temp_seed_{args["seed"]}.json', 'w') as f:
+                    json.dump(dict(best_temp=best_temp, seed=args["seed"]), f)
+
+            with open(Path(results_folder) / f'pred_target_logit_{args["seed"]}_session_{task_id}.pkl', 'wb') as f:
+                pickle.dump([model._last_results, model._last_logit], f)
 
         if args["dump_predictions"] and args["label"]:
             os.makedirs(
