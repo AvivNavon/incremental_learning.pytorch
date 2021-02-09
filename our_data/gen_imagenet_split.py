@@ -15,6 +15,12 @@ def class_map(path):
 
 gen_sample = False
 local = False
+split = 'test'
+
+assert split in ('test', 'val')
+
+if split == 'val':
+    print("using validation split")
 
 if local:
     dataroot = Path('/Users/avivnavon/Desktop/inc-gp/mini-imagenet/data')
@@ -81,12 +87,19 @@ else:
     all_test_images = []
     order = []
 
-    for episode_id in range(1, 10):
-        idx_file = open(dataroot / "index_list" / f"test_{episode_id}.txt", 'r')
-        lines = [l for l in idx_file]
-        curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
-        order += curr_classes
-        all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
+    if split == 'test':
+        for episode_id in range(1, 10):
+            idx_file = open(dataroot / "index_list" / f"test_{episode_id}.txt", 'r')
+            lines = [l for l in idx_file]
+            curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
+            order += curr_classes
+            all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
+        else:
+            idx_file = open(dataroot / "index_list" / f"session_1_val.txt", 'r')
+            lines = [l for l in idx_file]
+            curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
+            order += curr_classes
+            all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
 
     with open(outpath / 'val_100.txt', 'w') as f:
         for item in all_test_images:
