@@ -94,12 +94,12 @@ else:
             curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
             order += curr_classes
             all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
-        else:
-            idx_file = open(dataroot / "index_list" / f"session_1_val.txt", 'r')
-            lines = [l for l in idx_file]
-            curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
-            order += curr_classes
-            all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
+    else:
+        idx_file = open(dataroot / "index_list" / f"session_1_val.txt", 'r')
+        lines = [l for l in idx_file]
+        curr_classes = list(set([label_map[l.split("/")[-2]] for l in lines]))
+        order += curr_classes
+        all_test_images += [f'{prefix}/{Path(l).name.rstrip()} {label_map[l.split("/")[-2]]}' for l in lines]
 
     with open(outpath / 'val_100.txt', 'w') as f:
         for item in all_test_images:
